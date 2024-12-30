@@ -1,8 +1,15 @@
+import MyButton from "../Elements/Button";
 import InputForm from "../Elements/Input";
 
 const FormLogin = (props) => {
+  const handleLogin = (event) => {
+    event.preventDefault();
+    localStorage.setItem("email", event.target.email.value);
+    localStorage.setItem("password", event.target.password.value);
+    window.location.href = "/products";
+  };
   return (
-    <form className="max-w-sm mx-auto">
+    <form className="max-w-sm mx-auto" onSubmit={handleLogin}>
       <InputForm
         label="Email"
         type="email"
@@ -11,12 +18,9 @@ const FormLogin = (props) => {
       />
       <InputForm label="Password" type="password" name="password" />
 
-      <button
-        type="submit"
-        className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-      >
+      <MyButton variant="bg-blue-600" type="submit">
         Login
-      </button>
+      </MyButton> 
     </form>
   );
 };
