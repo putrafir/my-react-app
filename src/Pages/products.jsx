@@ -133,9 +133,9 @@ const ProductsPage = () => {
           </table>
         </div>
       </div>
-      <div className="mt-5">
+      {/* <div className="mt-5 flex justify-center">
         <Counter />
-      </div>
+      </div> */}
     </Fragment>
   );
 };
