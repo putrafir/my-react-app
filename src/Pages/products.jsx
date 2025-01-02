@@ -3,6 +3,7 @@ import CardProduct from "../components/Fragments/CardProduct";
 import { Fragment } from "react";
 import MyButton from "../components/Elements/Button";
 import { useState } from "react";
+import Counter from "../components/Fragments/Counter";
 
 const products = [
   {
@@ -131,6 +132,9 @@ const ProductsPage = () => {
             </tbody>
           </table>
         </div>
+      </div>
+      <div className="mt-5">
+        <Counter />
       </div>
     </Fragment>
   );
