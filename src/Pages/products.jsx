@@ -5,6 +5,7 @@ import MyButton from "../components/Elements/Button";
 import { useState } from "react";
 import Counter from "../components/Fragments/Counter";
 import { useEffect } from "react";
+import { useRef } from "react";
 
 const products = [
   {
@@ -68,6 +69,24 @@ const ProductsPage = () => {
       setCart([...cart, { id: id, quantity: 1 }]);
     }
   };
+
+  // useRef
+  const cartRef = useRef(JSON.parse(localStorage.getItem("cart")) || []);
+
+  const handleAddToCartRef = () => {
+    cartRef.current = [...cartRef.current, { id: 1, quantity: 1 }];
+    localStorage.setItem("cart", JSON.stringify(cartRef.current));
+  };
+
+  const totalPriceRef = useRef(null);
+
+  useEffect(() => {
+    if (cart.length > 0) {
+      totalPriceRef.current.style.display = "table-row";
+    } else {
+      totalPriceRef.current.style.display = "none";
+    }
+  });
 
   return (
     <Fragment>
@@ -141,7 +160,7 @@ const ProductsPage = () => {
                 );
               })}
 
-              <tr>
+              <tr ref={totalPriceRef}>
                 <td colSpan={3}>
                   <b>Total Price</b>
                 </td>
