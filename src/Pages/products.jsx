@@ -4,6 +4,7 @@ import { Fragment } from "react";
 import MyButton from "../components/Elements/Button";
 import { useState } from "react";
 import Counter from "../components/Fragments/Counter";
+import { useEffect } from "react";
 
 const products = [
   {
@@ -33,12 +34,22 @@ const products = [
 const email = localStorage.getItem("email");
 
 const ProductsPage = () => {
-  const [cart, setCart] = useState([
-    {
-      name: "Sepatu Baru",
-      quantity: 1,
-    },
-  ]);
+  const [cart, setCart] = useState([]);
+  const [totalPrice, setTotalPrice] = useState([0]);
+  useEffect(() => {
+    setCart(JSON.parse(localStorage.getItem("cart")) || []);
+  }, []);
+
+  useEffect(() => {
+    if (cart.length > 0) {
+      const sum = cart.reduce((acc, item) => {
+        const product = products.find((product) => product.id === item.id);
+        return acc + product.price * item.quantity;
+      }, 0);
+      setTotalPrice(sum);
+      localStorage.setItem("cart", JSON.stringify(cart));
+    }
+  }, [cart]);
 
   const handleLogout = () => {
     localStorage.removeItem("email");
@@ -60,13 +71,13 @@ const ProductsPage = () => {
 
   return (
     <Fragment>
-      <nav class="bg-white border-gray-200 dark:bg-gray-900">
-        <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
+      <nav className="bg-white border-gray-200 dark:bg-gray-900">
+        <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
           <div></div>
-          <div class="flex items-center space-x-6 rtl:space-x-reverse">
+          <div className="flex items-center space-x-6 rtl:space-x-reverse">
             <a
               href="tel:5541251234"
-              class="text-sm  text-gray-500 dark:text-white hover:underline"
+              className="text-sm  text-gray-500 dark:text-white hover:underline"
             >
               {email}
             </a>
@@ -129,6 +140,19 @@ const ProductsPage = () => {
                   </tr>
                 );
               })}
+
+              <tr>
+                <td colSpan={3}>
+                  <b>Total Price</b>
+                </td>
+                <td>
+                  <b>
+                    {" "}
+                    {"Rp "}
+                    {totalPrice.toLocaleString()}
+                  </b>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>
