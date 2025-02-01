@@ -13,7 +13,11 @@ const Header = (props) => {
   const { image } = props;
   return (
     <a href="#">
-      <img className="rounded-t-lg" src={image} alt="Product" />
+      <img
+        className="rounded-t-lg h-60 w-full object-cover"
+        src={image}
+        alt="Product"
+      />
     </a>
   );
 };
@@ -24,11 +28,11 @@ const Body = (props) => {
     <div className="p-5 h-full">
       <a href="#">
         <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
-          {name}
+          {name.substring(0, 20)} ...
         </h5>
       </a>
       <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-        {children}
+        {children.substring(0, 100)} ...
       </p>
     </div>
   );
@@ -38,7 +42,7 @@ const Footer = (props) => {
   const { price, handleAddToCart, id } = props;
   return (
     <div className="flex  items-center justify-between p-5">
-      <span className=" text-sm font-bold">Rp {price.toLocaleString()}</span>
+      <span className=" text-sm font-bold">$ {price.toLocaleString()}</span>
       <MyButton variant="bg-blue-600" onClick={() => handleAddToCart(id)}>
         Add To Cart
       </MyButton>
