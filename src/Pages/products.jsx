@@ -7,23 +7,32 @@ import Counter from "../components/Fragments/Counter";
 import { useEffect } from "react";
 import { useRef } from "react";
 import { getProducts } from "../services/product.service";
-
-const email = localStorage.getItem("email");
+import { getUsername } from "../services/auth.service";
 
 const ProductsPage = () => {
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState([0]);
   const [products, setProducts] = useState([]);
+  const [username, setUsername] = useState("");
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem("cart")) || []);
   }, []);
 
   useEffect(() => {
-    getProducts((data) => {
-      setProducts(data);
-    });
-  });
+    if (token) {
+      getProducts((data) => {
+        setProducts(data);
+      });
+    } else {
+      window.location.href = "/login";
+    }
+  }, []);
+
+  useEffect(() => {
+    setUsername(getUsername(token));
+  }, []);
 
   useEffect(() => {
     if (products.length > 0 && cart.length > 0) {
@@ -37,8 +46,7 @@ const ProductsPage = () => {
   }, [cart, products]);
 
   const handleLogout = () => {
-    localStorage.removeItem("email");
-    localStorage.removeItem("password");
+    localStorage.removeItem("token");
     window.location.href = "/login";
   };
 
@@ -78,13 +86,7 @@ const ProductsPage = () => {
         <div className="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4">
           <div></div>
           <div className="flex items-center space-x-6 rtl:space-x-reverse">
-            <a
-              href="tel:5541251234"
-              className="text-sm  text-gray-500 dark:text-white hover:underline"
-            >
-              {email}
-            </a>
-
+            <p>Welcome {username}</p>
             <MyButton textColor=" text-blue-600" onClick={handleLogout}>
               Logout
             </MyButton>
