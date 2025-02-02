@@ -1,37 +1,26 @@
-import { Button } from "flowbite-react";
 import CardProduct from "../components/Fragments/CardProduct";
 import { Fragment } from "react";
 import MyButton from "../components/Elements/Button";
 import { useState } from "react";
-import Counter from "../components/Fragments/Counter";
 import { useEffect } from "react";
 import { useRef } from "react";
 import { getProducts } from "../services/product.service";
-import { getUsername } from "../services/auth.service";
+import { useLogin } from "../hooks/useLogin";
 
 const ProductsPage = () => {
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState([0]);
   const [products, setProducts] = useState([]);
-  const [username, setUsername] = useState("");
-  const token = localStorage.getItem("token");
+  const username = useLogin();
 
   useEffect(() => {
     setCart(JSON.parse(localStorage.getItem("cart")) || []);
   }, []);
 
   useEffect(() => {
-    if (token) {
-      getProducts((data) => {
-        setProducts(data);
-      });
-    } else {
-      window.location.href = "/login";
-    }
-  }, []);
-
-  useEffect(() => {
-    setUsername(getUsername(token));
+    getProducts((data) => {
+      setProducts(data);
+    });
   }, []);
 
   useEffect(() => {
