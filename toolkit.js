@@ -1,14 +1,31 @@
-import toolkit from "@reduxjs/toolkit";
-import { build } from "vite";
+import { configureStore, createAction, createReducer } from "@reduxjs/toolkit";
 
-const { configureStore, createAction, createReducer } = toolkit;
+const addToCart = createAction("ADD_TO_CART");
+const login = createAction("CREATE_SESSION");
 
-const initialState = {
-  cart: [],
-};
-
-const cartReducer = createReducer(initialState, (builder) => {
-  builder.addCase("ADD_TO_CART", (state, action) => {
-    state.cart.push(action.payload);
+const cartReducer = createReducer([], (builder) => {
+  builder.addCase(addToCart, (state, action) => {
+    state.push(action.payload);
   });
 });
+
+const loginReducer = createReducer({ session: false }, (builder) => {
+  builder.addCase(login, (state, action) => {
+    state.session = true;
+  });
+});
+
+const store = configureStore({
+  reducer: {
+    login: loginReducer,
+    cart: cartReducer,
+  },
+});
+console.log("on create store : ", store.getState());
+
+store.subscribe(() => {
+  console.log("STORE CHANGE : ", store.getState());
+});
+
+store.dispatch(addToCart({ id: 2, quantity: 30 }));
+store.dispatch(login());
