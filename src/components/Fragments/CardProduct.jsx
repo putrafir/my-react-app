@@ -42,14 +42,14 @@ const Body = (props) => {
 };
 
 const Footer = (props) => {
-  const { price, handleAddToCart, id } = props;
+  const { price, id } = props;
   const dispatch = useDispatch();
   return (
     <div className="flex  items-center justify-between p-5">
       <span className=" text-sm font-bold">$ {price.toLocaleString()}</span>
       <MyButton
         variant="bg-blue-600"
-        onClick={() => dispatch(addToCart({ id, qty: 1 }))}
+        onClick={() => dispatch(addToCart({ id, quantity: 1 }))}
       >
         Add To Cart
       </MyButton>
